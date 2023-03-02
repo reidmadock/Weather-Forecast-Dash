@@ -10,7 +10,7 @@ var apiKeyTerm = "&appid=";
 var apiKey = "dacfab95576f6aec206ec9cde08bd9db";
 var unitsTerm = "&units=imperial"
 var testUrl = "https://api.openweathermap.org/data/2.5/weather?q=Chicago&appid=dacfab95576f6aec206ec9cde08bd9db"
-var latAndLon = new Array(); //latitude and longitude
+var latAndLon = []; //latitude and longitude
 
 /* Trying to store lat and lon in individual variables caused issues with those variables getting reset
 after the function. So they're in an area, and to account for multiple searches, the array can be
@@ -28,7 +28,26 @@ function getCityCoords(inputCity) {
     });
 }
 
-function getApi(searchUrl) {
+function getApiFiveDay() {
+    var fiveDayUrl = "api.openweathermap.org/data/2.5/forecast?"
+    console.log(latAndLon);
+    console.log("Lat: ", latAndLon[0])
+    console.log("Lon: ", latAndLon[1])
+    console.log(latAndLon);
+    var latTerm = "lat=" + latAndLon[latAndLon.length - 2];
+    var lonTerm = "&lon=" + latAndLon[latAndLon.length - 1];
+    var fullFiveDayUrl = fiveDayUrl + latTerm + lonTerm + apiKeyTerm + apiKey;
+    console.log(fullFiveDayUrl);
+    fetch(fullFiveDayUrl)
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (turkey) {
+        console.log(turkey);
+    });
+}
+
+function getApiToday(searchUrl) {
     fetch(searchUrl)
     .then(function (response) {
         return response.json();
@@ -38,12 +57,18 @@ function getApi(searchUrl) {
     });
 }
 
-function loadHistory() {
+function loadFullHistory() {
     for (var i = 0; i < localStorage.length; i++) {
         var divKey = document.createElement('div');
         divKey.textContent = localStorage.getItem(localStorage.key(i));
         historyContainer.appendChild(divKey);
     }
+}
+
+function loadHistory() {
+    var divKey = document.createElement('div');
+    divKey.textContent = localStorage.getItem(localStorage.key(localStorage.length - 1));
+    historyContainer.appendChild(divKey);
 }
 
 function citySearch (event) {
@@ -55,9 +80,10 @@ function citySearch (event) {
     // console.log(searchUrl);
     localStorage.setItem(searchedCity, searchedCity);
     // console.log('starbucks');
-    getApi(searchUrl); //Function call, function invocation
+    getApiToday(searchUrl); //Function call, function invocation
+    getApiFiveDay();
     loadHistory();
 }
 
-loadHistory();
+loadFullHistory();
 searchForm.addEventListener("submit", citySearch);
