@@ -12,35 +12,26 @@
         <h1>Weather Dashboard</h1>
     </header>
 
-    <div id="search-input">
-        <form id="search-form">
-            <label>Search:</label>
-            <input type="text" id="search-city"></input>
-            <button id="search-button">Submit</button>
-        </form>
+    <div id="content"> 
+        <div id="search-input">
+            <form id="search-form">
+                <label>Search:</label>
+                <input type="text" id="search-city"></input>
+                <button id="search-button">Submit</button>
+            </form>
 
-        <div id="history-container">
+            <div id="history-container">
+
+            </div>
+        </div>
+        
+        <div id="weather-area">
+            <div id="forecasts">
+                <!--Area gets populated by script-->
+            </div>
 
         </div>
-    </div>
-    
-    <div id="weather-area">
-        <div id="forecasts">
-            <div class="card" id="0"></div>
-            <div class="card" id="1"></div>
-            <div class="card" id="2"></div>
-            <div class="card" id="3"></div>
-            <div class="card" id="4"></div>
-            <div class="card" id="5"></div>
-        </div>
-
-        <div id="today-forecast">
-
-        </div>
-
-        <div id="five-day-forecast">
-
-        </div>
+        
     </div>
     <script src="./assets/js/script.js"></script>
 </body>

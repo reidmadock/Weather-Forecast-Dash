@@ -1,0 +1,45 @@
+* {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    text-align: center;
+}
+
+#content {
+    display: flex;
+}
+
+#search-input {
+    margin: 3rem;
+}
+
+#weather-area {
+    margin: 3rem;
+}
+
+#forecasts {
+    display: flex;
+    flex-direction: row;
+}
+
+.card {
+    margin: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 4%;
+    min-width: 160px;
+}
+
+.card ul {
+    padding: 1rem;
+}
+
+.card ul li {
+    list-style: none;
+    padding: .1rem;
+}
