@@ -21,11 +21,15 @@ header {
 
 #weather-area {
     margin: 3rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 #forecasts {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .card {
@@ -33,6 +37,13 @@ header {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     border-radius: 4%;
     min-width: 160px;
+}
+
+.card-data {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: .1rem;
+    padding-bottom: .1rem;
 }
 
 .card ul {

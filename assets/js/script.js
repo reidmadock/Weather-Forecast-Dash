@@ -1,7 +1,8 @@
 var searchForm = document.querySelector('#search-form');
 var inputCitySearch = document.querySelector('#search-city');
 var historyContainer = document.querySelector('#history-container');
-var forecastContainer = document.querySelector('#forecasts');
+// var forecastContainer = document.querySelector('#forecasts');
+var forecastContainers = [document.querySelector('#today'), document.querySelector('#five-day')];
 
 var searchTerm = "q=";
 var apiKeyTerm = "&appid=";
@@ -20,81 +21,59 @@ function makeCityEl(cityName) {
 }
 
 function makeDateEl(date) {
-    var dateEl = document.createElement('div');
-    dateEl.textContent = date;
+    var dateEl = document.createElement('h3');
+    dateEl.textContent = dayjs.unix(date).format('MM/DD/YYYY');
     dateEl.className = "card-data"
     return dateEl;
 }
 
 function makeIconEl(icon) {
-    var iconEl = document.createElement('div');
-    iconEl.textContent = icon;
+    var iconEl = document.createElement('img');
+    // iconEl.textContent = icon;
+    iconEl.src = "http://openweathermap.org/img/wn/" + icon + "@2x.png"
     iconEl.className = "card-data";
     return iconEl;
 }
 
 function makeTempEl(temp) {
     var tempEl = document.createElement('div')
-    tempEl.textContent = temp;
+    tempEl.textContent = temp + "°F";
     tempEl.className = "card-data";
     return tempEl;
 }
 
 function makeHumidEl(humid) {
     var humidEl = document.createElement('div')
-    humidEl.textContent = humid;
-    hunidEl.className = "card-data";
+    humidEl.textContent = humid + " %";
+    humidEl.className = "card-data";
     return humidEl;
 }
 
 function makeWindEl(wind) {
     var windEl = document.createElement('div')
-    windEl.textContent = temp;
-    tempEl.className = "card-data";
-    return tempEl;
+    windEl.textContent = wind + " MPH";
+    windEl.className = "card-data";
+    return windEl;
 }
 
-function makeCardEl(prop) {
-    var cardEl = document.createElement('div');
-    cardEl.textContent = prop;
-    cardEl.className = "card-data";
-    return cardEl
-}
+// function makeCardEl(prop) {
+//     var cardEl = document.createElement('div');
+//     cardEl.textContent = prop;
+//     cardEl.className = "card-data";
+//     return cardEl
+// }
 
 function renderForecast(cityName, date, icon, temp, humid, wind) {
     var forecastCard = document.createElement('div');
+    var forecastContainer = forecastContainers[1];
     forecastCard.className = "card";
     if (cityName.length > 0) {
+        forecastContainer = forecastContainers[0];
         forecastCard.append(makeCityEl(cityName))
     } 
-    forecastCard.append(makeCardEl(date), makeCardEl(icon), makeCardEl(temp), makeCardEl(humid), makeCardEl(wind));
+    forecastCard.append(makeDateEl(date), makeIconEl(icon), makeTempEl(temp), makeHumidEl(humid), makeWindEl(wind));
     forecastContainer.append(forecastCard);
 }
-
-
-// function renderForecast(cityName, date, icon, temp, humid, wind) {
-//     var forecastCard = document.createElement('div');
-//     forecastCard.className = "card";
-//     var infoList = document.createElement('ul');
-//     var dateEl = document.createElement('li');
-//     var iconEl = document.createElement('li');
-//     var tempEl = document.createElement('li');
-//     var humidEl = document.createElement('li');
-//     var windEl = document.createElement('li');
-//     if (cityName.length > 0) {
-//         var cityEl = document.createElement('li');
-//         cityEl.textContent = cityName;
-//         infoList.append(cityEl);
-//     } 
-//     dateEl.textContent = date;
-//     iconEl.textContent = icon;
-//     tempEl.textContent = temp;
-//     humidEl.textContent = humid;
-//     windEl.textContent = wind;
-//     infoList.append(dateEl, iconEl, tempEl, humidEl, windEl);
-//     forecastCard.append(infoList)
-//     forecastContainer.append(forecastCard);
-// }
 
 function getWeatherData(inputCity) {
     var fullGeoUrl = geoApiUrl + inputCity + limitTerm + apiKeyTerm + apiKey
@@ -146,9 +125,13 @@ function loadFullHistory() {
 }
 
 function clearPreviousForecast() {
-    console.log(forecastContainer.childNodes)
-    if (forecastContainer.childNodes.length > 0) {
-        forecastContainer.removeChild(forecastContainer.firstChild)
+    console.log(forecastContainers[0].childNodes)
+    if (forecastContainers[0].childNodes.length > 0) {
+        forecastContainers[0].removeChild(forecastContainers[0].firstChild)
+        clearPreviousForecast();
+    }
+    if (forecastContainers[1].childNodes.length > 0) {
+        forecastContainers[1].removeChild(forecastContainers[1].firstChild)
         clearPreviousForecast();
     }
 }
