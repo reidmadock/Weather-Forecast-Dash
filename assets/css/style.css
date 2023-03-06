@@ -1,5 +1,6 @@
 * {
-    font-family: 'Courier New', Courier, monospace;
+    /* font-family: 'Courier New', Courier, monospace; */
+    font-family: 'Kanit', sans-serif;
 }
 
 body {
@@ -11,22 +12,41 @@ header {
     text-align: center;
 }
 
+/* Left side content*/
+
 #content {
     display: flex;
 }
 
 #search-input {
-    margin: 3rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
 }
+
+#search-form {
+    padding: 1rem;
+}
+
+#history-container {
+    text-align: center;
+    margin: .2rem;
+}
+
+#history-container div {
+    margin: .2rem;
+    padding: .2rem;
+    background-color: grey;
+    color: aliceblue;
+}
+
+/* Right side content */
 
 #weather-area {
-    margin: 3rem;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    margin-left: 3rem;
+    margin-right: 3rem;
 }
 
-#forecasts {
+#five-day {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -35,7 +55,7 @@ header {
 .card {
     margin: 8px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 4%;
+    border-radius: 8px;
     min-width: 160px;
 }
 
@@ -44,6 +64,14 @@ header {
     padding-right: 1rem;
     padding-top: .1rem;
     padding-bottom: .1rem;
+}
+
+.card h2 {
+    font-size: 32px;
+}
+
+.card h3 {
+    font-size: 16px;
 }
 
 .card ul {

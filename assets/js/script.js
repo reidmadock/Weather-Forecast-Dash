@@ -12,8 +12,40 @@ var forecastUrl = "http://api.openweathermap.org/data/2.5/forecast?"
 var geoApiUrl = "http://api.openweathermap.org/geo/1.0/direct?q="
 var limitTerm = "&limit=1"
 
+// function giveWeatherEmoji(code) {
+//     if (code == '01') {
+//         return '☀';
+//     } else if ()
+// }
+
+// function giveWeatherEmoji(code) {
+//     console.log(code)
+//     switch (code) { 
+//         case code == '01': //01 clear sky
+//             return '☀';
+//         case code == '02': //02 few clouds
+//             return '⛅';
+//         case code == '03': //03 scattered clouds
+//             return '⛅';
+//         case code == '04': //04 broken clouds
+//             return '⛅';
+//         case code == '09': //09 shower rain
+//             return '🌧';
+//         case code == '10': //10 rain
+//             return '🌧';
+//         case code == '11': //11 thunderstorm
+//             return '⚡';
+//         case code == '13': //13 snow
+//             return '🌨';
+//         case code == '50': //50 mist
+//             return '🌫';
+//         default:
+//             return 'problem';
+//     }
+// }
+
 function makeCityEl(cityName) {
-    var cityEl = document.createElement('h3');
+    var cityEl = document.createElement('h2');
     cityEl.textContent = cityName;
     cityEl.className = "card-data"
     cityEl.setAttribute('id','city-name');
@@ -26,10 +58,11 @@ function makeDateEl(date) {
     dateEl.className = "card-data"
     return dateEl;
 }
-
+// const iconArr = ["☁","⛅","⛈","🌧","🌨","❄","⚡","☀","🌫"]
 function makeIconEl(icon) {
     var iconEl = document.createElement('img');
-    // iconEl.textContent = icon;
+    // var iconEl = document.createElement('div');
+    // iconEl.textContent = giveWeatherEmoji(icon.slice(0,2));
     iconEl.src = "http://openweathermap.org/img/wn/" + icon + "@2x.png"
     iconEl.className = "card-data";
     return iconEl;
@@ -82,8 +115,8 @@ function getWeatherData(inputCity) {
     .then(function (response) {
         return response.json();
     })
-    .then(function (turkey) {
-        return(turkey[0]);
+    .then(function (weather) {
+        return(weather[0]);
     })
     .then(function (data) {        
         var latTerm = "lat=" + data.lat;
@@ -100,10 +133,8 @@ async function asyncApiCall(url) {
         return response.json();
     })
     var cityName = result.city.name 
-    // console.log(cityName)
     localStorage.setItem(localStorage.length, cityName)
     for (var i = 0; i < 6; i++) {
-        // console.log(result.list[i])
         var name = ""
         if (i === 0) { name = result.city.name; }
         renderForecast(
@@ -116,6 +147,12 @@ async function asyncApiCall(url) {
     }
 }
 
+function loadRecentSearch(search) {
+    var divkey = document.createElement('div');
+    divkey.textContent = search;
+    historyContainer.append(divkey);
+}
+
 function loadFullHistory() {
     for (var i = 0; i < localStorage.length; i++) {
         var divKey = document.createElement('div');
@@ -125,7 +162,7 @@ function loadFullHistory() {
 }
 
 function clearPreviousForecast() {
-    console.log(forecastContainers[0].childNodes)
+    // console.log(forecastContainers[0].childNodes)
     if (forecastContainers[0].childNodes.length > 0) {
         forecastContainers[0].removeChild(forecastContainers[0].firstChild)
         clearPreviousForecast();
@@ -138,6 +175,7 @@ function clearPreviousForecast() {
 
 function citySearch (event) {
     event.preventDefault();
+    loadRecentSearch(inputCitySearch.value);
     if (inputCitySearch.value === "") { return; }
     clearPreviousForecast();
     getWeatherData(inputCitySearch.value);
