@@ -12,38 +12,6 @@ var forecastUrl = "http://api.openweathermap.org/data/2.5/forecast?"
 var geoApiUrl = "http://api.openweathermap.org/geo/1.0/direct?q="
 var limitTerm = "&limit=1"
 
-// function giveWeatherEmoji(code) {
-//     if (code == '01') {
-//         return '☀';
-//     } else if ()
-// }
-
-// function giveWeatherEmoji(code) {
-//     console.log(code)
-//     switch (code) { 
-//         case code == '01': //01 clear sky
-//             return '☀';
-//         case code == '02': //02 few clouds
-//             return '⛅';
-//         case code == '03': //03 scattered clouds
-//             return '⛅';
-//         case code == '04': //04 broken clouds
-//             return '⛅';
-//         case code == '09': //09 shower rain
-//             return '🌧';
-//         case code == '10': //10 rain
-//             return '🌧';
-//         case code == '11': //11 thunderstorm
-//             return '⚡';
-//         case code == '13': //13 snow
-//             return '🌨';
-//         case code == '50': //50 mist
-//             return '🌫';
-//         default:
-//             return 'problem';
-//     }
-// }
-
 function makeCityEl(cityName) {
     var cityEl = document.createElement('h2');
     cityEl.textContent = cityName;
@@ -58,11 +26,9 @@ function makeDateEl(date) {
     dateEl.className = "card-data"
     return dateEl;
 }
-// const iconArr = ["☁","⛅","⛈","🌧","🌨","❄","⚡","☀","🌫"]
+
 function makeIconEl(icon) {
     var iconEl = document.createElement('img');
-    // var iconEl = document.createElement('div');
-    // iconEl.textContent = giveWeatherEmoji(icon.slice(0,2));
     iconEl.src = "http://openweathermap.org/img/wn/" + icon + "@2x.png"
     iconEl.className = "card-data";
     return iconEl;
@@ -70,31 +36,24 @@ function makeIconEl(icon) {
 
 function makeTempEl(temp) {
     var tempEl = document.createElement('div')
-    tempEl.textContent = temp + "°F";
+    tempEl.textContent = "Temperature: " + temp + "°F";
     tempEl.className = "card-data";
     return tempEl;
 }
 
 function makeHumidEl(humid) {
     var humidEl = document.createElement('div')
-    humidEl.textContent = humid + " %";
+    humidEl.textContent = "Humidity: " + humid + " %";
     humidEl.className = "card-data";
     return humidEl;
 }
 
 function makeWindEl(wind) {
     var windEl = document.createElement('div')
-    windEl.textContent = wind + " MPH";
+    windEl.textContent = "Wind Speed: " + wind + " MPH";
     windEl.className = "card-data";
     return windEl;
 }
-
-// function makeCardEl(prop) {
-//     var cardEl = document.createElement('div');
-//     cardEl.textContent = prop;
-//     cardEl.className = "card-data";
-//     return cardEl
-// }
 
 function renderForecast(cityName, date, icon, temp, humid, wind) {
     var forecastCard = document.createElement('div');
@@ -107,7 +66,8 @@ function renderForecast(cityName, date, icon, temp, humid, wind) {
     forecastCard.append(makeDateEl(date), makeIconEl(icon), makeTempEl(temp), makeHumidEl(humid), makeWindEl(wind));
     forecastContainer.append(forecastCard);
 }
-
+/* 5 day forecast requires latitude and longitude so first API call is to grab the city
+cooridinates from OpenWeather's geo api  */
 function getWeatherData(inputCity) {
     var fullGeoUrl = geoApiUrl + inputCity + limitTerm + apiKeyTerm + apiKey
     
@@ -115,14 +75,14 @@ function getWeatherData(inputCity) {
     .then(function (response) {
         return response.json();
     })
-    .then(function (weather) {
-        return(weather[0]);
+    .then(function (location) {
+        return(location[0]); // Accessing latitude and longitude element
     })
-    .then(function (data) {        
+    .then(function (data) { //an async function call would probably be better than the triple then but this works
         var latTerm = "lat=" + data.lat;
         var lonTerm = "&lon=" + data.lon;
-        var fullForecastUrl = forecastUrl + latTerm + lonTerm + apiKeyTerm + apiKey + unitsTerm;
-
+        var fullForecastUrl = forecastUrl + latTerm + lonTerm + apiKeyTerm + apiKey + unitsTerm ;
+        console.log(fullForecastUrl)
         asyncApiCall(fullForecastUrl);
     });
 }
@@ -131,19 +91,23 @@ async function asyncApiCall(url) {
     const result = await fetch(url)
     .then (function (response) {
         return response.json();
-    })
+    }) //this call is returns a forecast for every 3 hours, which means only every 8 indicies are different days
     var cityName = result.city.name 
     localStorage.setItem(localStorage.length, cityName)
+    var count = 1;
+    console.log(result)
+    //Loop 6 times but grab every 18 hours using the count variable.
     for (var i = 0; i < 6; i++) {
         var name = ""
         if (i === 0) { name = result.city.name; }
         renderForecast(
             name,
-            result.list[i].dt,
-            result.list[i].weather[0].icon,
-            result.list[i].main.temp,
-            result.list[i].main.humidity,
-            result.list[i].wind.speed)
+            result.list[count].dt,
+            result.list[count].weather[0].icon,
+            result.list[count].main.temp,
+            result.list[count].main.humidity,
+            result.list[count].wind.speed)
+            count += 6; //increment count by 6 to make sure the next result is 18 hours from current
     }
 }
 
@@ -160,9 +124,8 @@ function loadFullHistory() {
         historyContainer.appendChild(divKey);
     }
 }
-
+/* Clear out the top and bottom elements of the weather area */
 function clearPreviousForecast() {
-    // console.log(forecastContainers[0].childNodes)
     if (forecastContainers[0].childNodes.length > 0) {
         forecastContainers[0].removeChild(forecastContainers[0].firstChild)
         clearPreviousForecast();
@@ -172,11 +135,13 @@ function clearPreviousForecast() {
         clearPreviousForecast();
     }
 }
-
+/* Prevent page from refreshing otherwise Promise is broken in API call, load a div with the search you made
+prevent functions from firing if nothing was searched, clear out previous search, then
+make API call */
 function citySearch (event) {
     event.preventDefault();
-    loadRecentSearch(inputCitySearch.value);
     if (inputCitySearch.value === "") { return; }
+    loadRecentSearch(inputCitySearch.value);
     clearPreviousForecast();
     getWeatherData(inputCitySearch.value);
 }

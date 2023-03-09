@@ -1,15 +1,24 @@
 * {
     /* font-family: 'Courier New', Courier, monospace; */
     font-family: 'Kanit', sans-serif;
+    --main-accent-clr: #feba53;
 }
 
 body {
     margin: 0;
     padding: 0;
-}
+    background: linear-gradient(-15deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 40%, rgba(255,154,0,1) 100%);
+    background-repeat: no-repeat;
+}   
 
 header {
     text-align: center;
+    font-size: 2rem;
+}
+
+header h1 {
+    margin: 0;
+    padding: 1rem;
 }
 
 /* Left side content*/
@@ -35,8 +44,9 @@ header {
 #history-container div {
     margin: .2rem;
     padding: .2rem;
-    background-color: grey;
-    color: aliceblue;
+    box-shadow: 0 .2rem .4rem 0 rgba(0, 0, 0, 0.2);
+    background-color: var(--main-accent-clr);
+    color: black;
 }
 
 /* Right side content */
@@ -54,7 +64,7 @@ header {
 
 .card {
     margin: 8px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 .2rem .4rem 0 rgba(0, 0, 0, 0.4);
     border-radius: 8px;
     min-width: 160px;
 }
@@ -74,11 +84,8 @@ header {
     font-size: 16px;
 }
 
-.card ul {
-    padding: 1rem;
-}
-
-.card ul li {
-    list-style: none;
-    padding: .1rem;
+@media screen and (max-width: 768px) {
+    #content {
+        flex-direction: column;
+    }
 }
