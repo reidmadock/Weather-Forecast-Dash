@@ -1,0 +1,91 @@
+* {
+    /* font-family: 'Courier New', Courier, monospace; */
+    font-family: 'Kanit', sans-serif;
+    --main-accent-clr: #feba53;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(-15deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 40%, rgba(255,154,0,1) 100%);
+    background-repeat: no-repeat;
+}   
+
+header {
+    text-align: center;
+    font-size: 2rem;
+}
+
+header h1 {
+    margin: 0;
+    padding: 1rem;
+}
+
+/* Left side content*/
+
+#content {
+    display: flex;
+}
+
+#search-input {
+    margin-left: 3rem;
+    margin-right: 3rem;
+}
+
+#search-form {
+    padding: 1rem;
+}
+
+#history-container {
+    text-align: center;
+    margin: .2rem;
+}
+
+#history-container div {
+    margin: .2rem;
+    padding: .2rem;
+    box-shadow: 0 .2rem .4rem 0 rgba(0, 0, 0, 0.2);
+    background-color: var(--main-accent-clr);
+    color: black;
+}
+
+/* Right side content */
+
+#weather-area {
+    margin-left: 3rem;
+    margin-right: 3rem;
+}
+
+#five-day {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card {
+    margin: 8px;
+    box-shadow: 0 .2rem .4rem 0 rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    min-width: 160px;
+}
+
+.card-data {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: .1rem;
+    padding-bottom: .1rem;
+}
+
+.card h2 {
+    font-size: 32px;
+}
+
+.card h3 {
+    font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {
+    #content {
+        flex-direction: column;
+    }
+}

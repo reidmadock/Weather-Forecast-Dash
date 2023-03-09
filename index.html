@@ -4,9 +4,49 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet"> 
+    <title>Weather Dashboard</title>
 </head>
 <body>
-    
+    <header>
+        <h1>Weather Dashboard</h1>
+    </header>
+
+    <div id="content"> 
+        <div id="search-input">
+            <h2>Search a City:</h2>
+            <form id="search-form">
+                <label>Search:</label>
+                <input type="text" id="search-city"></input>
+                <button id="search-button">Submit</button>
+            </form>
+
+            <div id="history-container">
+
+            </div>
+        </div>
+        
+        <div id="weather-area">
+
+            <div id="today">
+                <!--Area gets populated by script-->
+            </div>
+
+            <div id="five-day">
+                <!--Area gets populated by script-->
+            </div>
+
+        </div>
+        
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+      integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
+      crossorigin="anonymous"
+    ></script>
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>
